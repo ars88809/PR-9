@@ -1,7 +1,7 @@
 # Практическая работа №9: Работа с меню в Android
 
 **Выполнил:**  
-Саньков Андрей Александрович  
+Шкуро Арсений Александрович  
 Группа: ИНС-б-о-24-1  
 Направление: 09.03.02 «Информационные системы и технологии»
 
@@ -9,7 +9,7 @@
 
 ## Цель работы
 
-Изучить способы создания и обработки событий от различных типов меню в Android: главного меню (OptionsMenu) и контекстного меню (ContextMenu). Научиться динамически изменять интерфейс приложения с помощью пунктов меню
+Изучить способы создания и обработки событий от различных типов меню в Android: главного меню (OptionsMenu) и контекстного меню (ContextMenu). Научиться динамически изменять интерфейс приложения с помощью пунктов меню.
 
 ---
 
@@ -17,8 +17,7 @@
 
 ### Задание 1. Создание проекта и подготовка интерфейса
 
-Создан проект `MenuLab`. В `activity_main.xml` размещены ImageView (для отображения картинок) и поясняющий TextView. В папку `res/drawable` добавлены три изображения: image1.png`, image2.png, image3.png.
-
+Создан проект `MenuLab`. В `activity_main.xml` TextView(для отображения текста)
 **Скриншот интерфейса:**  
 
 ![](media/1.png)
@@ -27,84 +26,18 @@
 
 ---
 
-### Задание 2. Создание OptionsMenu (главное меню) – смена изображения
+### Задание 2. Создание OptionsMenu (главное меню) – смена размера текста
 
 **Описание:**  
-Создан файл `res/menu/main_menu.xml` с тремя пунктами для выбора изображения. В `MainActivity` переопределены `onCreateOptionsMenu()` и `onOptionsItemSelected()`. При выборе пункта меняется картинка в `ImageView`.
+Создан файл `res/menu/main_menu.xml` с тремя пунктами для выбора изображения. В `MainActivity` переопределены `onCreateOptionsMenu()` и `onOptionsItemSelected()`. При выборе пункта размер текста `TextView`.
 
-**Фрагмент кода main_menu.xml:**
-```
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_img1" android:title="Изображение 1" />
-    <item android:id="@+id/action_img2" android:title="Изображение 2" />
-    <item android:id="@+id/action_img3" android:title="Изображение 3" />
-</menu>
-```
-Код из MainActivity.java:
-```
-// Загрузка главного меню из XML
-@Override
-public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.main_menu, menu);
-    return true;
-}
-
-// Обработка выбора пункта меню
-@Override
-public boolean onOptionsItemSelected(MenuItem item) {
-    int id = item.getItemId();
-
-    if (id == R.id.action_image1) {
-        imageView.setImageResource(images[0]);
-        return true;
-    } else if (id == R.id.action_image2) {
-        imageView.setImageResource(images[1]);
-        return true;
-    } else if (id == R.id.action_image3) {
-        imageView.setImageResource(images[2]);
-        return true;
-    }
-    return super.onOptionsItemSelected(item);
-}
-```
 ![](media/2.png)
 
-**Рисунок 2** — смена изображения
+**Рисунок 2** — изменение размера текста
 
 ### Задание 3. Создание ContextMenu
-Для ImageView зарегистрировано контекстное меню через registerForContextMenu(). Меню создано динамически в onCreateContextMenu() с двумя пунктами: «Повернуть по часовой стрелке» и «Повернуть против часовой стрелки». При выборе угол поворота ImageView увеличивается или уменьшается на 90 градусов.
+Для TextView зарегистрировано контекстное меню через registerForContextMenu(). Меню создано динамически в onCreateContextMenu() с двумя пунктами: «переместить выше» и «переместить ниже». При выборе высота TextView увеличивается или уменьшается.
 
-Регистрация View в onCreate:
-```
-imageView = findViewById(R.id.imageView);
-registerForContextMenu(imageView);
-```
-Создание контекстного меню (динамическое):
-```
-@Override
-public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-    super.onCreateContextMenu(menu, v, menuInfo);
-    menu.setHeaderTitle("Поворот изображения");
-    menu.add(0, 1, 0, "По часовой стрелке");
-    menu.add(0, 2, 1, "Против часовой стрелки");
-}
-```
-Обработка выбора:
-```
-@Override
-public boolean onContextItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-        case 1:
-            imageView.setRotation(imageView.getRotation() + 90);
-            return true;
-        case 2:
-            imageView.setRotation(imageView.getRotation() - 90);
-            return true;
-    }
-    return super.onContextItemSelected(item);
-}
-```
 ![](media/3.png)
 
 **Рисунок 3** — контекстное меню
@@ -112,9 +45,9 @@ public boolean onContextItemSelected(MenuItem item) {
 ### Задание 4. Объединение и тестирование
 В рамках итоговой проверки приложение было запущено на эмуляторе.
 
-Главное меню (OptionsMenu) вызывается нажатием на три точки в ActionBar и содержит три пункта: «Изображение 1», «Изображение 2», «Изображение 3». При выборе любого из них изображение в ImageView корректно меняется на соответствующее.
+Главное меню (OptionsMenu) вызывается нажатием на три точки в ActionBar и содержит три пункта. При выборе любого из них текст в TextView корректно меняется на соответствующее.
 
-Контекстное меню вызывается долгим нажатием на то же ImageView. Заголовок «Поворот изображения» и пункты «По часовой стрелке» / «Против часовой стрелки» отображаются, при выборе изображение поворачивается на 90° в заданном направлении.
+Контекстное меню вызывается долгим нажатием на то же TextView. подпункты контекстного меню корректно отоброжаются и функционируют.
 
 Оба меню работают без конфликтов, интерфейс не блокируется, переходов между экранами не требуется — всё реализовано в одной Activity.
 
